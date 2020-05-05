@@ -5,5 +5,5 @@ export const pool = new Pool({
     host: 'localhost',
     database: 'recipes',
     password: 'password',
-    port: 5432
+    port: 5000
 });

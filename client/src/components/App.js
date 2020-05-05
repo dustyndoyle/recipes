@@ -10,9 +10,9 @@ import '../App.css';
 
 class App extends Component {
     
-    // constructor(props) {
-    //     super(props);   
-    // }
+    constructor(props) {
+        super(props);   
+    }
 
     componentDidMount() {
         const { dispatch, userId } = this.props;
@@ -35,13 +35,12 @@ class App extends Component {
 }
 
 function mapStateToProps( state ) {
-    const { recipes } = state;
-    const { isFetching, lastUpdated, recipeData, user_id } = recipes || { isFetching: true, data: [] };
+    const { allRecipes } = state;
+    const { isFetching, lastUpdated, recipeData } = allRecipes || { isFetching: true, data: [] };
 
     return {
         recipeData,
         isFetching,
-        user_id,
         lastUpdated
     }
 }
