@@ -25,7 +25,10 @@ class Recipe extends Component {
                 {isFetching && recipeData.length === 0 && <h2>Loading Recipe...</h2>}
                 {!isFetching && recipeData.length === 0 && <h2>Recipe not found</h2>}
                 {recipeData.length > 0 && (
-                    <h1>{recipeData[0].name}</h1>
+                    <div className="single-recipe-header">
+                        <h1>{recipeData[0].name}</h1>
+                        <div className="single-recipe-description">{recipeData[0].description}</div>
+                    </div>
                 )}
             </div>
         )

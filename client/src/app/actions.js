@@ -76,12 +76,14 @@ function fetchSingleRecipe( recipeId, userId ) {
 }
 
 function shouldFetchSingleRecipe( state, recipeId,  userId ) {
-    const recipe = state.singleRecipe;
+    const recipe = state.singleRecipe[recipeId];
 
-    if( recipe.isFetching ) {
+    if( !recipe ) {
+        return true;
+    } else if( recipe.isFetching ) {
         return false;
     } else {
-        return true;
+        return false;
     }
 }
 
