@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import {
     fetchSingleRecipeIfNeeded
 } from '../../app/actions';
-import { recipeDisplay } from '../recipeDisplay/recipeDisplaySlice';
 
 class Recipe extends Component {
 
@@ -19,15 +18,32 @@ class Recipe extends Component {
     }
 
     render() {
-        const { recipe_id, recipeData, isFetching } = this.props;
+        const { recipeData, isFetching } = this.props;
         return (
             <div className="recipe-container">
+                <div className="recipe-back-to-home">
+                    <NavLink to="/">Go back</NavLink>
+                </div>
                 {isFetching && recipeData.length === 0 && <h2>Loading Recipe...</h2>}
                 {!isFetching && recipeData.length === 0 && <h2>Recipe not found</h2>}
                 {recipeData.length > 0 && (
-                    <div className="single-recipe-header">
-                        <h1>{recipeData[0].name}</h1>
-                        <div className="single-recipe-description">{recipeData[0].description}</div>
+                    <div>
+                        <div className="single-recipe-header">
+                            <h1>{recipeData[0].name}</h1>
+                            <div className="single-recipe-description">{recipeData[0].description}</div>
+                        </div>
+                        { Object.keys(recipeData[0].ingredients).length > 0 && (
+                            <div className="single-recipe-ingredients">
+                            {Object.keys(recipeData[0].ingredients).map( ( ingredient, i ) => {
+                                return (
+                                    <div key={i} className="single-recipe-ingredient">
+                                        <div className="single-recipe-ingredient-amount">{ingredient}</div>
+                                        <div className="single-recipe-ingredient-name">{recipeData[0].ingredients[ingredient]}</div>
+                                    </div>
+                                )
+                            })}
+                            </div>
+                        )}
                     </div>
                 )}
             </div>

@@ -12,7 +12,7 @@ const getRecipes = (req, res) => {
 const getRecipeById = ( req, res ) => {
     const id = parseInt(req.params.id);
 
-    db.query('SELECT * FROM recipes INNER JOIN recipe_data ON recipes.id = recipe_data.recipe_id WHERE recipes.id = $1', [id], (err, results) => {
+    db.query('SELECT recipes.id, recipes.name, recipes.description, recipes.user_id, recipe_data.ingredients FROM recipes INNER JOIN recipe_data ON recipes.id = recipe_data.recipe_id WHERE recipes.id = $1', [id], (err, results) => {
         if( err ) {
             throw err;
         }
