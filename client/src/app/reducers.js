@@ -4,8 +4,31 @@ import {
     REQUEST_RECIPES,
     RECEIVE_RECIPES,
     REQUEST_SINGLE_RECIPE,
-    RECEIVE_SINGLE_RECIPE
+    RECEIVE_SINGLE_RECIPE,
+    BEGIN_ADD_NEW_RECIPE,
+    END_ADD_NEW_RECIPE
 } from './actions';
+
+function addRecipe( state = {}, action ) {
+
+    const initialState = {
+        isAdding: true,
+        recipe_name: action.recipe_name,
+        recipe_description: action.recipe_description,
+        user_id: action.userId,
+    }
+
+    switch( action.type ) {
+        case END_ADD_NEW_RECIPE:
+            return Object.assign( {}, initialState, {
+                    isAdding: false
+                });
+        case BEGIN_ADD_NEW_RECIPE:
+            return initialState;
+        default:
+            return state;
+    }
+}
 
 function singleRecipe( state = {}, action ) {
     switch( action.type ) {
@@ -75,6 +98,7 @@ function recipes(
 const rootReducer = combineReducers({
     singleRecipe,
     allRecipes,
+    addRecipe,
 });
 
 export default rootReducer;

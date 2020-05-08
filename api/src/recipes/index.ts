@@ -21,13 +21,14 @@ const getRecipeById = ( req, res ) => {
 };
 
 const createRecipe = (req, res) => {
-    const { name, description } = req.body;
+    const { recipe_name, recipe_description } = req.body;
 
-    db.query('INSERT INTO recipes (name, description, user_id) VALUES ($1,$2,$3)', [name, description, 1], (err, result) => {
+    db.query('INSERT INTO recipes (name, description, user_id) VALUES ($1,$2,$3) RETURNING *', [recipe_name, recipe_description, 1], ( err, result ) => {
+
         if( err ) {
             throw err;
         }
-        res.status(201).send(`Recipe added with ID: ${result.insertId}`);
+        res.status(201).json( result.rows[0] );
     });
 };
 
