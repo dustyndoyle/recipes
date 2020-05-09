@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+import {
+    removeRecipe
+} from '../../app/actions'
 // import PropTypes from 'prop-types';
 
-export default class Recipes extends Component {
+class Recipes extends Component {
 
     constructor(props) {
         super(props);
@@ -12,6 +16,7 @@ export default class Recipes extends Component {
 
     onDeleteRecipe(e) {
         const recipeId = e.target.value;
+        this.props.deleteRecipe( recipeId );
         e.preventDefault();
     }
 
@@ -33,3 +38,11 @@ export default class Recipes extends Component {
         )
     }
 }
+
+const mapDispatchToProps = dispatch => {
+    return {
+        deleteRecipe: recipeId => dispatch( removeRecipe( recipeId ) )
+    }
+}
+
+export default connect( null, mapDispatchToProps )( Recipes );

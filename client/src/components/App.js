@@ -36,6 +36,7 @@ class App extends Component {
 
 function mapStateToProps( state ) {
     const { allRecipes } = state;
+    console.log( allRecipes );
     const { isFetching, lastUpdated, recipeData } = allRecipes || { isFetching: true, data: [] };
 
     return {

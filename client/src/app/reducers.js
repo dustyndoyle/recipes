@@ -6,7 +6,9 @@ import {
     REQUEST_SINGLE_RECIPE,
     RECEIVE_SINGLE_RECIPE,
     BEGIN_ADD_NEW_RECIPE,
-    END_ADD_NEW_RECIPE
+    END_ADD_NEW_RECIPE,
+    BEGIN_DELETE_RECIPE,
+    END_DELETE_RECIPE
 } from './actions';
 
 function addRecipe( state = {}, action ) {
@@ -63,6 +65,8 @@ function allRecipes( state = {
         user_id: 1,
     }, action ) {
     switch( action.type ) {
+        case BEGIN_DELETE_RECIPE:
+        case END_DELETE_RECIPE:
         case RECEIVE_RECIPES:
         case REQUEST_RECIPES:
             return Object.assign( {}, state, recipes( state, action ));
@@ -80,6 +84,7 @@ function recipes(
     action
 ) {
     switch( action.type ) {
+        case BEGIN_DELETE_RECIPE:
         case REQUEST_RECIPES:
             return Object.assign( {}, state, {
                 isFetching: true,
@@ -89,6 +94,11 @@ function recipes(
                 isFetching: false,
                 recipeData: action.recipes,
                 lastUpdated: action.receivedAt
+            });
+        case END_DELETE_RECIPE:
+            return Object.assign( {}, state, {
+                isFetching: false,
+                recipeData: [ ...state.recipeData.filter( recipe => recipe.id != action.recipe_id ) ]
             });
         default:
             return state;

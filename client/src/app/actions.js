@@ -6,6 +6,22 @@ export const REQUEST_SINGLE_RECIPE = 'REQUEST_SINGLE_RECIPE';
 export const RECEIVE_SINGLE_RECIPE = 'RECEIVE_SINGLE_RECIPE';
 export const BEGIN_ADD_NEW_RECIPE = 'BEGIN_ADD_NEW_RECIPE';
 export const END_ADD_NEW_RECIPE = 'END_ADD_NEW_RECIPE';
+export const BEGIN_DELETE_RECIPE = 'BEGIN_DELETE_RECIPE';
+export const END_DELETE_RECIPE = 'END_DELETE_RECIPE';
+
+function beginDeleteRecipe( recipeId ) {
+    return {
+        type: BEGIN_DELETE_RECIPE,
+        recipe_id: recipeId
+    }
+}
+
+function recipeDeleted( recipeId ) {
+    return {
+        type: END_DELETE_RECIPE,
+        recipe_id: recipeId,
+    }
+}
 
 function beginAddingRecipe( recipeData, userId = 1 ) {
     return {
@@ -152,6 +168,30 @@ export function addNewRecipe( recipeData ) {
     return( dispatch, getState ) => {
         if( shouldAddNewRecipe( getState(), recipeData ) ) {
             return dispatch( postNewRecipe( recipeData ) );
+        }
+    }
+}
+
+function deleteRecipe( recipeId ) {
+    return dispatch => {
+        dispatch( beginDeleteRecipe( recipeId ) )
+        return fetch( `http://localhost:8080/recipes/${recipeId}`, {
+            method: 'DELETE',
+            cache: 'no-cache',
+        })
+        .then( response => {
+            dispatch( recipeDeleted( recipeId ) )
+        })
+        .catch( err => {
+            console.error( 'Error: ', err );
+        })
+    }
+}
+
+export function removeRecipe( recipeId ) {
+    return( dispatch, getState ) => {
+        if( shouldFetchRecipes( getState(), 1 ) ) {
+            return dispatch( deleteRecipe( recipeId ) );
         }
     }
 }
