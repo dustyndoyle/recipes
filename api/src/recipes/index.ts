@@ -21,10 +21,12 @@ const getRecipeById = ( req, res ) => {
 };
 
 const createRecipe = (req, res) => {
-    const { recipe_name, recipe_description } = req.body;
+    // console.log( req.body )
+    const { recipe_name, recipe_description, recipe_ingredients } = req.body;
 
-    db.query('INSERT INTO recipes (name, description, user_id) VALUES ($1,$2,$3) RETURNING *', [recipe_name, recipe_description, 1], ( err, result ) => {
-
+    db.query('WITH new_recipe AS ( INSERT INTO recipes (name, description, user_id) VALUES ($1,$2,$3) RETURNING id ) INSERT INTO recipe_data (recipe_id, ingredients) VALUES ((SELECT id FROM new_recipe), $4) RETURNING *', [recipe_name, recipe_description, 1, JSON.stringify(recipe_ingredients)], ( err, result ) => {
+        // console.log( err );
+        console.log( result );
         if( err ) {
             throw err;
         }

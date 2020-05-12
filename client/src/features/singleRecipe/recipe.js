@@ -32,13 +32,13 @@ class Recipe extends Component {
                             <h1>{recipeData[0].name}</h1>
                             <div className="single-recipe-description">{recipeData[0].description}</div>
                         </div>
-                        { Object.keys(recipeData[0].ingredients).length > 0 && (
+                        { recipeData[0].ingredients.length > 0 && (
                             <div className="single-recipe-ingredients">
-                            {Object.keys(recipeData[0].ingredients).map( ( ingredient, i ) => {
+                            {recipeData[0].ingredients.map( ( ingredient, i ) => {
                                 return (
                                     <div key={i} className="single-recipe-ingredient">
-                                        <div className="single-recipe-ingredient-amount">{ingredient}</div>
-                                        <div className="single-recipe-ingredient-name">{recipeData[0].ingredients[ingredient]}</div>
+                                        <div className="single-recipe-ingredient-amount">{ingredient.ingredient_amount}</div>
+                                        <div className="single-recipe-ingredient-name">{ingredient.ingredient_name}</div>
                                     </div>
                                 )
                             })}
