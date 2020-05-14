@@ -12,7 +12,7 @@ const getRecipes = (req, res) => {
 const getRecipeById = ( req, res ) => {
     const id = parseInt(req.params.id);
 
-    db.query('SELECT recipes.id, recipes.name, recipes.description, recipes.user_id, recipe_data.ingredients FROM recipes INNER JOIN recipe_data ON recipes.id = recipe_data.recipe_id WHERE recipes.id = $1', [id], (err, results) => {
+    db.query('SELECT recipes.id, recipes.name, recipes.description, recipes.user_id, recipe_data.ingredients, recipe_data.instructions FROM recipes INNER JOIN recipe_data ON recipes.id = recipe_data.recipe_id WHERE recipes.id = $1', [id], (err, results) => {
         if( err ) {
             throw err;
         }
@@ -22,11 +22,11 @@ const getRecipeById = ( req, res ) => {
 
 const createRecipe = (req, res) => {
     // console.log( req.body )
-    const { recipe_name, recipe_description, recipe_ingredients } = req.body;
+    const { recipe_name, recipe_description, recipe_ingredients, recipe_instructions } = req.body;
 
-    db.query('WITH new_recipe AS ( INSERT INTO recipes (name, description, user_id) VALUES ($1,$2,$3) RETURNING id ) INSERT INTO recipe_data (recipe_id, ingredients) VALUES ((SELECT id FROM new_recipe), $4) RETURNING *', [recipe_name, recipe_description, 1, JSON.stringify(recipe_ingredients)], ( err, result ) => {
+    db.query('WITH new_recipe AS ( INSERT INTO recipes (name, description, user_id) VALUES ($1,$2,$3) RETURNING id ) INSERT INTO recipe_data (recipe_id, ingredients, instructions) VALUES ((SELECT id FROM new_recipe), $4, $5) RETURNING *', [recipe_name, recipe_description, 1, JSON.stringify(recipe_ingredients), JSON.stringify(recipe_instructions)], ( err, result ) => {
         // console.log( err );
-        console.log( result );
+        // console.log( result );
         if( err ) {
             throw err;
         }

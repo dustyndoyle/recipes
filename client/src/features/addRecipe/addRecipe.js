@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 // import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 // import { NavLink } from 'react-router-dom';
+import { Editor } from '@tinymce/tinymce-react';
 import {
     addNewRecipe
 } from '../../app/actions';
@@ -15,11 +16,13 @@ class AddRecipe extends Component {
         this.state = {
             recipe_name: '',
             recipe_description: '',
-            recipe_ingredients: []
+            recipe_ingredients: [],
+            recipe_instructions: { content: '' }
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleAddIngredient = this.handleAddIngredient.bind(this);
         this.handleEditIngredient = this.handleEditIngredient.bind(this);
+        this.handleEditorChange = this.handleEditorChange.bind(this);
         this.handleReset = this.handleReset.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -50,11 +53,19 @@ class AddRecipe extends Component {
         })
     }
 
+    handleEditorChange( content, editor ) {
+        const editorContent = {content};
+        this.setState({
+            recipe_instructions: editorContent
+        })
+    }
+
     handleReset(e) {
         this.setState({
             recipe_name: '',
             recipe_description: '',
             recipe_ingredients: [],
+            recipe_instructions: { content: '' }
         });
         e.preventDefault();
     }
@@ -92,8 +103,30 @@ class AddRecipe extends Component {
                             <AddRecipeIngredient onIngredientAdded={this.handleAddIngredient} />
                         </div>
                     </div>
-                    <button id="addRecipeSubmit" className="add-recipe-submit" type="submit">Add Recipe</button>
-                    <button id="addRecipeReset" onClick={this.handleReset} className="add-recipe-reset" type="reset">Clear Recipe</button>
+                    <div className="add-recipe-row">
+                        <h3>Instructions</h3>
+                        <Editor
+                            initialValue={this.state.recipe_instructions.content}
+                            apiKey='ieayaz4molmnxjn9gr9msf2d8mnpql66nuzj47kjmagbvoti'
+                            init={{
+                            height: 500,
+                            menubar: false,
+                            plugins: [
+                            'advlist autolink lists link image charmap print preview anchor',
+                            'searchreplace visualblocks code fullscreen',
+                            'insertdatetime media table paste code help wordcount'
+                            ],
+                            toolbar:
+                            'undo redo | formatselect | bold italic | \
+                            bullist numlist | removeformat | help'
+                            }}
+                            onEditorChange={this.handleEditorChange}
+                        />
+                    </div>
+                    <div className="add-recipe-footer">
+                        <button id="addRecipeSubmit" className="add-recipe-submit" type="submit">Add Recipe</button>
+                        <button id="addRecipeReset" onClick={this.handleReset} className="add-recipe-reset" type="reset">Clear Recipe</button>
+                    </div>
                 </form>
             </div>
         )

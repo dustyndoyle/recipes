@@ -44,6 +44,7 @@ class Recipe extends Component {
                             })}
                             </div>
                         )}
+                        <div className="single-recipe-instructions" dangerouslySetInnerHTML={{ __html: recipeData[0].instructions.content }} />
                     </div>
                 )}
             </div>
