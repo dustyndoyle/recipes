@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { Editor } from '@tinymce/tinymce-react';
 import {
     addNewRecipe
-} from '../../app/actions';
+} from '../../actions/recipes/addRecipe';
 import AddRecipeIngredient from './addRecipeInput';
 import EditRecipeInput from './editRecipeInput';
 

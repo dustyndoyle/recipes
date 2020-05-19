@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux';
-
 import {
     REQUEST_RECIPES,
     RECEIVE_RECIPES,
@@ -9,7 +8,7 @@ import {
     END_ADD_NEW_RECIPE,
     BEGIN_DELETE_RECIPE,
     END_DELETE_RECIPE
-} from './actions';
+} from '../constants/recipes';
 
 function addRecipe( state = {}, action ) {
 

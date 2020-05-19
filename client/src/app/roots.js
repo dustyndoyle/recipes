@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
-import App from './App';
-import Recipe from '../features/singleRecipe/recipe';
-import AddRecipe from '../features/addRecipe/addRecipe';
-import NoMatch from './404';
+import App from './app';
+import Recipe from '../components/singleRecipe/';
+import AddRecipe from '../components/addRecipe/';
+import NoMatch from '../components/404/';
 
 const Root = ({ store }) => (
     <Provider store={store}>

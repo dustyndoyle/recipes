@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import {
     fetchSingleRecipeIfNeeded
-} from '../../app/actions';
+} from '../../actions/recipes/singleRecipe';
 
 class Recipe extends Component {
 

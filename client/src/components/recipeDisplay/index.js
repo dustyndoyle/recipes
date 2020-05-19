@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import {
     removeRecipe
-} from '../../app/actions'
+} from '../../actions/recipes/deleteRecipe'
 // import PropTypes from 'prop-types';
 
 class Recipes extends Component {
