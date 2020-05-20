@@ -4,15 +4,13 @@ import { connect } from 'react-redux';
 import {
     fetchRecipesIfNeeded
 } from '../actions/recipes/getRecipes';
-// import logo from '../logo.svg';
 import Recipes from '../components/recipeDisplay/';
-import '../App.css';
 
 class App extends Component {
     
-    constructor(props) {
-        super(props);   
-    }
+    // constructor(props) {
+    //     super(props);   
+    // }
 
     componentDidMount() {
         const { dispatch, userId } = this.props;
@@ -23,7 +21,7 @@ class App extends Component {
         const { recipeData, isFetching } = this.props;
 
         return(
-            <div className="app-container">
+            <div className="site-inner content-wrap">
                 {isFetching && recipeData.length === 0 && <h2>Loading...</h2>}
                 {!isFetching && recipeData.length === 0 && <h2>No Recipes</h2>}
                 {recipeData.length > 0 && (

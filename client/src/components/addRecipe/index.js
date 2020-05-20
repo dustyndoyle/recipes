@@ -3,9 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 // import { NavLink } from 'react-router-dom';
 import { Editor } from '@tinymce/tinymce-react';
-import {
-    addNewRecipe
-} from '../../actions/recipes/addRecipe';
+import { addNewRecipe } from '../../actions/recipes/addRecipe';
 import AddRecipeIngredient from './addRecipeInput';
 import EditRecipeInput from './editRecipeInput';
 
@@ -78,7 +76,7 @@ class AddRecipe extends Component {
 
     render() {
         return (
-            <div className="recipe-container">
+            <div className="site-inner content-wrap">
                 <form onSubmit={this.handleSubmit} className="add-recipe-form">
                     <div className="add-recipe-row">
                         <label htmlFor="recipeName" className="add-recipe-label">Recipe Name</label>
@@ -109,16 +107,14 @@ class AddRecipe extends Component {
                             initialValue={this.state.recipe_instructions.content}
                             apiKey='ieayaz4molmnxjn9gr9msf2d8mnpql66nuzj47kjmagbvoti'
                             init={{
-                            height: 500,
-                            menubar: false,
-                            plugins: [
-                            'advlist autolink lists link image charmap print preview anchor',
-                            'searchreplace visualblocks code fullscreen',
-                            'insertdatetime media table paste code help wordcount'
-                            ],
-                            toolbar:
-                            'undo redo | formatselect | bold italic | \
-                            bullist numlist | removeformat | help'
+                                height: 500,
+                                menubar: false,
+                                plugins: [
+                                    'advlist autolink lists link image charmap print preview anchor',
+                                    'searchreplace visualblocks code fullscreen',
+                                    'insertdatetime media table paste code help wordcount'
+                                ],
+                                toolbar: 'undo redo | formatselect | bold italic | bullist numlist | removeformat | help'
                             }}
                             onEditorChange={this.handleEditorChange}
                         />

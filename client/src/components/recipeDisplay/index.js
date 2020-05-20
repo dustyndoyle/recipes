@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom';
 import {
     removeRecipe
 } from '../../actions/recipes/deleteRecipe'
+import './recipes.scss';
 // import PropTypes from 'prop-types';
 
 class Recipes extends Component {
@@ -22,15 +23,15 @@ class Recipes extends Component {
 
     render() {
         return (
-            <div className="recipes-container">
+            <div className="recipes__container">
                 {this.props.recipes.map( ( recipe, i ) => {
                     return(
-                    <div className="recipes-single" key={recipe.id}>
-                        <h2 className="recipes-title">
+                    <div className="recipes__recipe" key={recipe.id}>
+                        <h2 className="recipes__recipe__title">
                             <NavLink to={`/recipes/${recipe.id}`}>{recipe.name}</NavLink>
                         </h2>
-                        <div className="recipes-description">{recipe.description}</div>
-                        <button onClick={this.onDeleteRecipe} value={recipe.id} type="button">Delete Recipe</button>
+                        <div className="recipes__recipe__description">{recipe.description}</div>
+                        <button className="recipes__recipe__delete" onClick={this.onDeleteRecipe} value={recipe.id} type="button">Delete Recipe</button>
                     </div>
                     )
                 })}

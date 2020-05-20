@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
-import { NavLink } from 'react-router-dom';
 import {
     fetchSingleRecipeIfNeeded
 } from '../../actions/recipes/singleRecipe';
+import './recipe.scss';
 
 class Recipe extends Component {
 
-    constructor(props) {
-        super(props);
-    }
+    // constructor(props) {
+    //     super(props);
+    // }
 
     componentDidMount() {
         const { dispatch, recipe_id, user_id } = this.props;
@@ -20,31 +20,28 @@ class Recipe extends Component {
     render() {
         const { recipeData, isFetching } = this.props;
         return (
-            <div className="recipe-container">
-                <div className="recipe-back-to-home">
-                    <NavLink to="/">Go back</NavLink>
-                </div>
+            <div className="site-inner content-wrap">
                 {isFetching && recipeData.length === 0 && <h2>Loading Recipe...</h2>}
                 {!isFetching && recipeData.length === 0 && <h2>Recipe not found</h2>}
                 {recipeData.length > 0 && (
-                    <div>
-                        <div className="single-recipe-header">
-                            <h1>{recipeData[0].name}</h1>
-                            <div className="single-recipe-description">{recipeData[0].description}</div>
+                    <div className="single-recipe__container single-recipe">
+                        <div className="single-recipe__header">
+                            <h1 className="single-recipe__title">{recipeData[0].name}</h1>
+                            <div className="single-recipe__description">{recipeData[0].description}</div>
                         </div>
                         { recipeData[0].ingredients.length > 0 && (
-                            <div className="single-recipe-ingredients">
+                            <div className="single-recipe__ingredients">
                             {recipeData[0].ingredients.map( ( ingredient, i ) => {
                                 return (
-                                    <div key={i} className="single-recipe-ingredient">
-                                        <div className="single-recipe-ingredient-amount">{ingredient.ingredient_amount}</div>
-                                        <div className="single-recipe-ingredient-name">{ingredient.ingredient_name}</div>
+                                    <div key={i} className="single-recipe__ingredients__ingredient">
+                                        <div className="single-recipe__ingredients__amount">{ingredient.ingredient_amount}</div>
+                                        <div className="single-recipe__ingredients__name">{ingredient.ingredient_name}</div>
                                     </div>
                                 )
                             })}
                             </div>
                         )}
-                        <div className="single-recipe-instructions" dangerouslySetInnerHTML={{ __html: recipeData[0].instructions.content }} />
+                        <div className="single-recipe__instructions" dangerouslySetInnerHTML={{ __html: recipeData[0].instructions.content }} />
                     </div>
                 )}
             </div>

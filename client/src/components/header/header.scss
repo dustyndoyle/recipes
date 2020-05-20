@@ -1,0 +1,30 @@
+// Header Styles
+
+.header {
+    background-color: #364f6b;
+    padding-top: 1.125rem;
+    padding-bottom: 1.125rem;
+
+    &__navigation {
+        list-style-type: none;
+        padding-left: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    &__navigation-item {
+        display: inline-block;
+        margin-left: 1.25rem;
+
+        &:first-child {
+            margin-left: 0;
+        }
+
+        a {
+            display: block;
+            color: #fff;
+            // font-size: 0.9375rem;
+            font-weight: 600;
+        }
+    }
+}

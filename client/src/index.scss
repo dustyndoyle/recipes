@@ -1,0 +1,36 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.25;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+}
+
+.site-inner {
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+.content-wrap {
+    max-width: 1024px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+ul,
+ol {
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-left: 1.25rem;
+    padding-right: 0;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+a {
+    color: #000;
+    text-decoration: none;
+}
