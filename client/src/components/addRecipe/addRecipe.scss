@@ -1,0 +1,174 @@
+// Adding Recipe Styles
+
+.add-recipe {
+
+    &__header {
+        margin-bottom: 1.25rem;
+
+        &__title {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+    }
+
+    &__row {
+        margin-top: 0.9375rem;
+
+        &:first-child {
+            margin-top: 0;
+        }
+
+        &__title {
+            font-size: 1.25rem;
+            padding-top: 1.25rem;
+            margin-bottom: 0.75rem;
+        }
+    }
+
+    &__ingredients {
+
+        &__ingredient {
+            margin-bottom: 0.5rem;
+        }
+
+        &__edit {
+            display: flex;
+            align-items: center;
+
+            &__amount {
+                flex: 1 0 0px;
+                min-width: 250px;
+                max-width: 250px;
+                // font-weight: bold;
+                // text-align: right;
+                // padding-right: 1.25rem;
+            }
+    
+            &__name {
+                flex: 1 0 0px;
+                font-size: 0.9375rem;
+                margin-left: 1.25rem;
+            }
+
+            &__button {
+                flex: 1 0 0px;
+                cursor: pointer;
+                background: none;
+                border: none;
+                border-radius: 0;
+                box-shadow: none;
+                max-width: 1.25rem;
+                color: #fc5185;
+                font-size: 1.125rem;
+                line-height: 1;
+                padding-top: 0;
+                padding-bottom: 0;
+                padding-left: 0;
+                padding-right: 0;
+                margin-left: 0.625rem;
+
+                &:hover {
+                    color: #fc5185;
+                }
+            }
+        }
+
+        &__add {
+
+            &__row {
+                display: flex;
+                align-items: center;
+            }
+
+            &__amount {
+                flex: 1 0 0px;
+                min-width: 250px;
+                max-width: 250px;
+                // font-weight: bold;
+                // text-align: right;
+                // padding-right: 1.25rem;
+            }
+    
+            &__name {
+                flex: 1 0 0px;
+                font-size: 0.9375rem;
+                margin-left: 1.25rem;
+            }
+
+            &__button {
+                flex: 1 0 0px;
+                cursor: pointer;
+                background: none;
+                border: none;
+                border-radius: 0;
+                box-shadow: none;
+                max-width: 1.25rem;
+                color: #3fc1c9;
+                font-size: 1.125rem;
+                line-height: 1;
+                padding-top: 0;
+                padding-bottom: 0;
+                padding-left: 0;
+                padding-right: 0;
+                margin-left: 0.625rem;
+
+                &:hover {
+                    color: #364f6b;
+                }
+            }
+        }
+    }
+
+    &__footer {
+        margin-top: 2.5rem;
+    }
+
+    &__reset {
+        display: inline-block;
+        cursor: pointer;
+        background-color: #fc5185;
+        border: none;
+        border-radius: 3px;
+        color: #fff;
+        font-size: 0.9375rem;
+        font-weight: 600;
+        padding-top: 0.625rem;
+        padding-bottom: 0.5625rem;
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+        margin-top: 0;
+        margin-bottom: 0;
+        margin-left: 0;
+        margin-right: 0;
+
+        &:hover {
+            background-color: #fc5185;
+            color: #fff;
+        }
+    }
+
+    &__submit {
+        display: inline-block;
+        cursor: pointer;
+        background-color: #3fc1c9;
+        border: none;
+        border-radius: 3px;
+        color: #fff;
+        font-size: 0.9375rem;
+        font-weight: 600;
+        padding-top: 0.625rem;
+        padding-bottom: 0.5625rem;
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+        margin-top: 0;
+        margin-bottom: 0;
+        margin-left: 0.9375rem;
+        margin-right: 0;
+        transition: background 0.15s ease-in-out;
+
+        &:hover {
+            background-color: #364f6b;
+            color: #fff;
+        }
+    }
+}

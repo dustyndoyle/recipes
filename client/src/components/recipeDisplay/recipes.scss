@@ -1,14 +1,20 @@
 // Recipes Styling
 
 .recipes {
+
+    &__title {
+        margin-bottom: 1.5rem;
+    }
     
     &__recipe {
+        position: relative;
+        z-index: 1;
         border: 1px solid #000;
         border-radius: 4px;
-        padding-top: 0.3125rem;
-        padding-bottom: 0.625rem;
-        padding-left: 0.625rem;
-        padding-right: 0.625rem;
+        padding-top: 0.75rem;
+        padding-bottom: 0.9375rem;
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
         margin-top: 0.625rem;
 
         &:first-child {
@@ -19,11 +25,75 @@
             font-size: 1.25rem;
             margin-top: 0;
             margin-bottom: 0;
+
+            a {
+                display: inline-block;
+                color: #000;
+
+                &:hover {
+                    color: #3fc1c9;
+                }
+            }
         }
 
         &__description {
             font-size: 0.75rem;
             margin-top: 0.3125rem;
+        }
+
+        &__view {
+            font-size: 0.75rem;
+            margin-top: 0.625rem;
+
+            a {
+                display: inline-block;
+                background-color: #3fc1c9;
+                border-radius: 3px;
+                color: #fff;
+                font-weight: bold;
+                padding-top: 0.3125rem;
+                padding-bottom: 0.3125rem;
+                padding-left: 0.625rem;
+                padding-right: 0.625rem;
+                transition: background 0.15s ease-in-out;
+
+                &:hover {
+                    background-color: #364f6b;
+                    color: #fff;
+                }
+            }
+        }
+
+        &__delete {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            border-radius: 0;
+            box-shadow: none;
+            color: #fff;
+            font-weight: 600;
+            padding-top: 0;
+            padding-bottom: 0;
+            padding-left: 0;
+            padding-right: 0;
+
+            &:hover {
+
+                svg {
+                    // color: #3fc1c9;
+                }
+            }
+
+            svg {
+                display: block;
+                color: #fc5185;
+                font-size: 1rem;
+                line-height: 1;
+                font-weight: normal;
+            }
         }
     }
 }

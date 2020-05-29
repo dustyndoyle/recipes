@@ -22,6 +22,7 @@ class App extends Component {
 
         return(
             <div className="site-inner content-wrap">
+                <h1 className="recipes__title">All Recipes</h1>
                 {isFetching && recipeData.length === 0 && <h2>Loading...</h2>}
                 {!isFetching && recipeData.length === 0 && <h2>No Recipes</h2>}
                 {recipeData.length > 0 && (

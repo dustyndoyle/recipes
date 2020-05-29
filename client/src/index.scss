@@ -5,17 +5,59 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     margin: 0;
+
+    * {
+        box-sizing: border-box;
+    }
 }
 
 .site-inner {
-    margin-top: 40px;
-    margin-bottom: 40px;
+    margin-top: 1.875rem;
+    margin-bottom: 2.5rem;
 }
 
 .content-wrap {
     max-width: 1024px;
     margin-left: auto;
     margin-right: auto;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin-top: 0;
+    margin-bottom: 0.375rem;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
+h1 {
+    font-size: 1.875rem;
+}
+
+h2 {
+    font-size: 1.5rem;
+}
+
+h3 {
+    font-size: 1.3125rem;
+}
+
+h4 {
+    font-size: 1.1875rem;
+}
+
+h5 {
+    font-size: 1.125rem;
+}
+
+h6 {
+    font-size: 1rem;
 }
 
 ul,
@@ -30,7 +72,85 @@ ol {
     margin-right: 0;
 }
 
+p {
+    margin-top: 0;
+    margin-bottom: 1.125rem;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
 a {
     color: #000;
     text-decoration: none;
+}
+
+label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea {
+    display: block;
+    background-color: #fff;
+    border: 1px solid #000;
+    border-radius: 3px;
+    box-shadow: none;
+    width: 100%;
+    color: #000;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1rem;
+    padding-top: 0.3125rem;
+    padding-bottom: 0.3125rem;
+    padding-left: 0.625rem;
+    padding-right: 0.625rem;
+}
+
+textarea {
+    resize: none;
+    height: 130px;
+}
+
+.tox {
+
+    &:not([dir=rtl]) {
+
+        .tox-editor-container {
+            
+            .tox-toolbar-overlord {
+                background-color: #f5f5f5;
+            }
+
+            .tox-toolbar {
+    
+                &__group {
+    
+                    &:not(:last-of-type) {
+                        border-color: #000;
+                    }
+                }
+
+                &__primary {
+                    background: none;
+                    border-bottom: 1px solid #000;
+                }
+            }
+        }
+
+        .tox-statusbar {
+            background-color: #f5f5f5;
+            border-color: #000;
+        }
+    }
+
+    &.tox-tinymce {
+        border: 1px solid #000;
+        border-radius: 3px;
+    }
 }

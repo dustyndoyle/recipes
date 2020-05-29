@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import {
-    removeRecipe
-} from '../../actions/recipes/deleteRecipe'
+import { removeRecipe } from '../../actions/recipes/deleteRecipe';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrashAlt } from '@fortawesome/free-regular-svg-icons';
 import './recipes.scss';
 // import PropTypes from 'prop-types';
 
@@ -16,7 +16,7 @@ class Recipes extends Component {
     }
 
     onDeleteRecipe(e) {
-        const recipeId = e.target.value;
+        const recipeId = e.currentTarget.value;
         this.props.deleteRecipe( recipeId );
         e.preventDefault();
     }
@@ -31,7 +31,12 @@ class Recipes extends Component {
                             <NavLink to={`/recipes/${recipe.id}`}>{recipe.name}</NavLink>
                         </h2>
                         <div className="recipes__recipe__description">{recipe.description}</div>
-                        <button className="recipes__recipe__delete" onClick={this.onDeleteRecipe} value={recipe.id} type="button">Delete Recipe</button>
+                        <div className="recipes__recipe__view">
+                            <NavLink to={`/recipes/${recipe.id}`}>View Recipe</NavLink>
+                        </div>
+                        <button className="recipes__recipe__delete" onClick={this.onDeleteRecipe} value={recipe.id} type="button">
+                            <FontAwesomeIcon icon={faTrashAlt} />
+                        </button>
                     </div>
                     )
                 })}

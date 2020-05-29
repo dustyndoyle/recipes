@@ -6,6 +6,7 @@ import { Editor } from '@tinymce/tinymce-react';
 import { addNewRecipe } from '../../actions/recipes/addRecipe';
 import AddRecipeIngredient from './addRecipeInput';
 import EditRecipeInput from './editRecipeInput';
+import './addRecipe.scss'
 
 class AddRecipe extends Component {
 
@@ -20,6 +21,7 @@ class AddRecipe extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleAddIngredient = this.handleAddIngredient.bind(this);
         this.handleEditIngredient = this.handleEditIngredient.bind(this);
+        this.handleRemoveIngredient = this.handleRemoveIngredient.bind(this);
         this.handleEditorChange = this.handleEditorChange.bind(this);
         this.handleReset = this.handleReset.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -37,6 +39,7 @@ class AddRecipe extends Component {
 
     handleAddIngredient(ingredientAdded) {
         const currentIngredients = this.state.recipe_ingredients;
+
         this.setState({
             recipe_ingredients: [...currentIngredients, ingredientAdded]
         })
@@ -51,8 +54,17 @@ class AddRecipe extends Component {
         })
     }
 
+    handleRemoveIngredient( ingredientIndex ) {
+        const currentIngredients = this.state.recipe_ingredients.filter( (el, i) => ingredientIndex !== i );
+
+        this.setState({
+            recipe_ingredients: currentIngredients
+        })
+    }
+
     handleEditorChange( content, editor ) {
         const editorContent = {content};
+
         this.setState({
             recipe_instructions: editorContent
         })
@@ -77,53 +89,58 @@ class AddRecipe extends Component {
     render() {
         return (
             <div className="site-inner content-wrap">
-                <form onSubmit={this.handleSubmit} className="add-recipe-form">
-                    <div className="add-recipe-row">
-                        <label htmlFor="recipeName" className="add-recipe-label">Recipe Name</label>
-                        <input name="recipe_name" id="recipeName" className="add-recipe-input" type="text" onChange={this.handleChange} value={this.state.recipe_name} required />
+                <div className="add-recipe add-recipe__container">
+                    <div className="add-recipe__header">
+                        <h1 className="add-recipe__header__title">Add New Recipe</h1>
                     </div>
-                    <div className="add-recipe-row">
-                        <label htmlFor="recipeDescription" className="add-recipe-label">Description of recipe</label>
-                        <textarea name="recipe_description" id="recipeDescription" className="add-recipe-input" onChange={this.handleChange} value={this.state.recipe_description} />
-                    </div>
-                    <div className="add-recipe-row">
-                        <h3>Ingredients</h3>
-                        <div className="add-recipe-ingredients-list">
-                            {this.state.recipe_ingredients.map( (ingredient, i) => {
-                                return(
-                                    <div key={i} className="add-recipe-ingredients-item">
-                                        <EditRecipeInput onIngredientChanged={this.handleEditIngredient} ingredientIndex={i} ingredientAmount={ingredient.ingredient_amount} ingredientName={ingredient.ingredient_name} />
-                                    </div>
-                                )
-                            })}
+                    <form onSubmit={this.handleSubmit} className="add-recipe__form">
+                        <div className="add-recipe__row">
+                            <label htmlFor="recipeName" className="add-recipe__row__label">Recipe Name</label>
+                            <input name="recipe_name" id="recipeName" className="add-recipe__row__input" type="text" onChange={this.handleChange} value={this.state.recipe_name} required />
                         </div>
-                        <div className="add-recipe-ingredients">
-                            <AddRecipeIngredient onIngredientAdded={this.handleAddIngredient} />
+                        <div className="add-recipe__row">
+                            <label htmlFor="recipeDescription" className="add-recipe__row__label">Description of recipe</label>
+                            <textarea name="recipe_description" id="recipeDescription" maxLength="300" className="add-recipe__row__input" onChange={this.handleChange} value={this.state.recipe_description} />
                         </div>
-                    </div>
-                    <div className="add-recipe-row">
-                        <h3>Instructions</h3>
-                        <Editor
-                            initialValue={this.state.recipe_instructions.content}
-                            apiKey='ieayaz4molmnxjn9gr9msf2d8mnpql66nuzj47kjmagbvoti'
-                            init={{
-                                height: 500,
-                                menubar: false,
-                                plugins: [
-                                    'advlist autolink lists link image charmap print preview anchor',
-                                    'searchreplace visualblocks code fullscreen',
-                                    'insertdatetime media table paste code help wordcount'
-                                ],
-                                toolbar: 'undo redo | formatselect | bold italic | bullist numlist | removeformat | help'
-                            }}
-                            onEditorChange={this.handleEditorChange}
-                        />
-                    </div>
-                    <div className="add-recipe-footer">
-                        <button id="addRecipeSubmit" className="add-recipe-submit" type="submit">Add Recipe</button>
-                        <button id="addRecipeReset" onClick={this.handleReset} className="add-recipe-reset" type="reset">Clear Recipe</button>
-                    </div>
-                </form>
+                        <div className="add-recipe__row">
+                            <h3 className="add-recipe__row__title">Ingredients</h3>
+                            <div className="add-recipe__ingredients">
+                                {this.state.recipe_ingredients.map( (ingredient, i) => {
+                                    return(
+                                        <div key={i} className="add-recipe__ingredients__ingredient">
+                                            <EditRecipeInput onIngredientChanged={this.handleEditIngredient} onIngredientRemoved={this.handleRemoveIngredient} ingredientIndex={i} ingredientAmount={ingredient.ingredient_amount} ingredientName={ingredient.ingredient_name} />
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                            <div className="add-recipe__ingredients__add">
+                                <AddRecipeIngredient onIngredientAdded={this.handleAddIngredient} />
+                            </div>
+                        </div>
+                        <div className="add-recipe__row">
+                            <h3 className="add-recipe__row__title">Instructions</h3>
+                            <Editor
+                                initialValue={this.state.recipe_instructions.content}
+                                apiKey='ieayaz4molmnxjn9gr9msf2d8mnpql66nuzj47kjmagbvoti'
+                                init={{
+                                    height: 500,
+                                    menubar: false,
+                                    plugins: [
+                                        'advlist autolink lists link image charmap print preview anchor',
+                                        'searchreplace visualblocks code fullscreen',
+                                        'insertdatetime media table paste code help wordcount'
+                                    ],
+                                    toolbar: 'undo redo | formatselect | bold italic | bullist numlist | removeformat | help'
+                                }}
+                                onEditorChange={this.handleEditorChange}
+                            />
+                        </div>
+                        <div className="add-recipe__footer">
+                            <button id="addRecipeReset" onClick={this.handleReset} className="add-recipe__reset" type="reset">Clear Recipe</button>
+                            <button id="addRecipeSubmit" className="add-recipe__submit" type="submit">Add Recipe</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         )
     }

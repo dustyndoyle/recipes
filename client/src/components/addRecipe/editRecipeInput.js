@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMinus } from '@fortawesome/free-solid-svg-icons';
 
 class EditRecipeIngredient extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            ingredient_amount: this.props.ingredientAmount,
-            ingredient_name: this.props.ingredientName,
-        }
+
         this.handleAmountChange = this.handleAmountChange.bind(this);
         this.handleNameChange = this.handleNameChange.bind(this);
-        // this.handleEditIngredient = this.handleEditIngredient.bind(this);
+        this.handleRemoveIngredient = this.handleRemoveIngredient.bind(this);
     }
 
     handleAmountChange(e) {
@@ -20,10 +19,6 @@ class EditRecipeIngredient extends Component {
         const amountValue = amountInput.value;
 
         this.props.onIngredientChanged( inputName, amountValue, index );
-
-        this.setState({
-            ingredient_amount: amountValue
-        });
     }
 
     handleNameChange(e) {
@@ -33,17 +28,22 @@ class EditRecipeIngredient extends Component {
         const nameValue = nameInput.value;
 
         this.props.onIngredientChanged( inputName, nameValue, index );
+    }
 
-        this.setState({
-            ingredient_name: nameValue
-        });
+    handleRemoveIngredient(e) {
+        const index = this.props.ingredientIndex;
+        
+        this.props.onIngredientRemoved( index );
     }
 
     render() {
         return (
-            <div className="edit-single-ingredient">
-                <input className="edit-single-ingredient-amount" type="text" name="ingredient_amount" onChange={this.handleAmountChange} placeholder="Ingredient amount" value={this.state.ingredient_amount} />
-                <input className="edit-single-ingredient-name" type="text" name="ingredient_name" onChange={this.handleNameChange} placeholder="Ingredient name" value={this.state.ingredient_name} />
+            <div className="add-recipe__ingredients__edit">
+                <input className="add-recipe__ingredients__edit__amount" type="text" name="ingredient_amount" onChange={this.handleAmountChange} placeholder="Ingredient amount" value={this.props.ingredientAmount} />
+                <input className="add-recipe__ingredients__edit__name" type="text" name="ingredient_name" onChange={this.handleNameChange} placeholder="Ingredient name" value={this.props.ingredientName} />
+                <button id="addRecipeIngredient" className="add-recipe__ingredients__edit__button" onClick={this.handleRemoveIngredient} type="button">
+                    <FontAwesomeIcon icon={faMinus} />
+                </button>
             </div>
         )
     }

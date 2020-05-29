@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
-import {
-    fetchSingleRecipeIfNeeded
-} from '../../actions/recipes/singleRecipe';
+import { fetchSingleRecipeIfNeeded } from '../../actions/recipes/singleRecipe';
 import './recipe.scss';
 
 class Recipe extends Component {
@@ -31,17 +29,23 @@ class Recipe extends Component {
                         </div>
                         { recipeData[0].ingredients.length > 0 && (
                             <div className="single-recipe__ingredients">
-                            {recipeData[0].ingredients.map( ( ingredient, i ) => {
-                                return (
-                                    <div key={i} className="single-recipe__ingredients__ingredient">
-                                        <div className="single-recipe__ingredients__amount">{ingredient.ingredient_amount}</div>
-                                        <div className="single-recipe__ingredients__name">{ingredient.ingredient_name}</div>
-                                    </div>
-                                )
-                            })}
+                                <div className="single-recipe__ingredients__header">Ingredients</div>
+                                <div className="single-recipe__ingredients__container">
+                                    {recipeData[0].ingredients.map( ( ingredient, i ) => {
+                                        return (
+                                            <div key={i} className="single-recipe__ingredients__ingredient">
+                                                <div className="single-recipe__ingredients__amount">{ingredient.ingredient_amount}</div>
+                                                <div className="single-recipe__ingredients__name">{ingredient.ingredient_name}</div>
+                                            </div>
+                                        )
+                                    })}
+                                </div>
                             </div>
                         )}
-                        <div className="single-recipe__instructions" dangerouslySetInnerHTML={{ __html: recipeData[0].instructions.content }} />
+                        <div className="single-recipe__instructions">
+                            <div className="single-recipe__instructions__header">Instructions</div>
+                            <div className="single-recipe__instructions__content" dangerouslySetInnerHTML={{ __html: recipeData[0].instructions.content }} />
+                        </div>
                     </div>
                 )}
             </div>
