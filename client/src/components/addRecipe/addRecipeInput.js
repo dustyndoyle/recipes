@@ -40,6 +40,8 @@ class AddRecipeIngredient extends Component {
             ingredient_amount: '',
             ingredient_name: '',
         })
+        e.preventDefault();
+        e.stopPropagation();
     }
 
     render() {

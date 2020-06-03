@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 // import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
-// import { NavLink } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { Editor } from '@tinymce/tinymce-react';
 import { addNewRecipe } from '../../actions/recipes/addRecipe';
 import AddRecipeIngredient from './addRecipeInput';
@@ -13,12 +13,20 @@ class AddRecipe extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            recipe_name: '',
-            recipe_description: '',
+            recipe_name: {
+                content: '',
+                isValid: false
+            },
+            recipe_description: {
+                content: '',
+                isValid: false
+            },
             recipe_ingredients: [],
-            recipe_instructions: { content: '' }
+            recipe_instructions: { content: '' },
+            form_valid: false
         }
         this.handleChange = this.handleChange.bind(this);
+        this.validateTextInput = this.validateTextInput.bind(this);
         this.handleAddIngredient = this.handleAddIngredient.bind(this);
         this.handleEditIngredient = this.handleEditIngredient.bind(this);
         this.handleRemoveIngredient = this.handleRemoveIngredient.bind(this);
@@ -28,13 +36,39 @@ class AddRecipe extends Component {
     }
 
     handleChange(e) {
+        e.persist();
         const currentInput = e.target;
         const inputName = currentInput.name;
         const inputValue = currentInput.value;
         
         this.setState({
-            [inputName]: inputValue
-        });
+            [inputName]: {
+                content: inputValue,
+                isValid: this.state[inputName].isValid
+            }
+        }, () => this.validateTextInput(e) );
+    }
+
+    validateTextInput(e) {
+        const currentInput = e.target;
+        const inputName = currentInput.name;
+        const inputValue = currentInput.value;
+        
+        if( !!inputValue.trim() ) {
+            this.setState({
+                [inputName]: {
+                    content: this.state[inputName].content,
+                    isValid: true
+                }
+            })
+        } else {
+            this.setState({
+                [inputName]: {
+                    content: this.state[inputName].content,
+                    isValid: false
+                }
+            })
+        }
     }
 
     handleAddIngredient(ingredientAdded) {
@@ -72,7 +106,10 @@ class AddRecipe extends Component {
 
     handleReset(e) {
         this.setState({
-            recipe_name: '',
+            recipe_name: {
+                content: '',
+                isValid: false
+            },
             recipe_description: '',
             recipe_ingredients: [],
             recipe_instructions: { content: '' }
@@ -82,7 +119,10 @@ class AddRecipe extends Component {
 
     handleSubmit(e) {
         const recipeData = this.state;
-        this.props.newRecipe( recipeData );
+
+        if( this.state.form_valid ) {
+            this.props.newRecipe( recipeData, this.props.history );
+        }
         e.preventDefault();
     }
 
@@ -96,11 +136,11 @@ class AddRecipe extends Component {
                     <form onSubmit={this.handleSubmit} className="add-recipe__form">
                         <div className="add-recipe__row">
                             <label htmlFor="recipeName" className="add-recipe__row__label">Recipe Name</label>
-                            <input name="recipe_name" id="recipeName" className="add-recipe__row__input" type="text" onChange={this.handleChange} value={this.state.recipe_name} required />
+                            <input name="recipe_name" id="recipeName" className="add-recipe__row__input" type="text" onChange={this.handleChange} value={this.state.recipe_name.content} required />
                         </div>
                         <div className="add-recipe__row">
                             <label htmlFor="recipeDescription" className="add-recipe__row__label">Description of recipe</label>
-                            <textarea name="recipe_description" id="recipeDescription" maxLength="300" className="add-recipe__row__input" onChange={this.handleChange} value={this.state.recipe_description} />
+                            <textarea name="recipe_description" id="recipeDescription" maxLength="300" className="add-recipe__row__input" onChange={this.handleChange} value={this.state.recipe_description.content} />
                         </div>
                         <div className="add-recipe__row">
                             <h3 className="add-recipe__row__title">Ingredients</h3>
@@ -148,8 +188,8 @@ class AddRecipe extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        newRecipe: recipeData => dispatch( addNewRecipe( recipeData ) )
+        newRecipe: ( recipeData, history ) => dispatch( addNewRecipe( recipeData, history ) )
     }
 }
 
-export default connect( null, mapDispatchToProps )( AddRecipe );
+export default connect( null, mapDispatchToProps )( withRouter( AddRecipe ) );

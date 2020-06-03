@@ -23,7 +23,7 @@ function recipeAdded( recipeData, userId = 1 ) {
 }
 
 
-function postNewRecipe( recipeData ) {
+function postNewRecipe( recipeData, history ) {
     return dispatch => {
         dispatch( beginAddingRecipe( recipeData ) )
         return fetch( `http://localhost:8080/recipes`, {
@@ -39,7 +39,8 @@ function postNewRecipe( recipeData ) {
             return response.json()
         })
         .then( json => {
-            return dispatch( recipeAdded( json ) )
+            dispatch( recipeAdded( json ) );
+            history.push( '/recipes/' + json.recipe_id )
         })
         .catch( err => {
             console.error( 'Error: ', err );
@@ -56,10 +57,10 @@ function shouldAddNewRecipe( state, recipeData ) {
     return true;
 }
 
-export function addNewRecipe( recipeData ) {
+export function addNewRecipe( recipeData, history ) {
     return( dispatch, getState ) => {
         if( shouldAddNewRecipe( getState(), recipeData ) ) {
-            return dispatch( postNewRecipe( recipeData ) );
+            return dispatch( postNewRecipe( recipeData, history ) );
         }
     }
 }
