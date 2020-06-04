@@ -11,7 +11,7 @@ const Header = () => (
                         <NavLink to="/">All Recipes</NavLink>
                     </li>
                     <li className="header__navigation-item">
-                        <NavLink to="/add-recipe">Add New Recipe</NavLink>
+                        <NavLink to="/recipes/add">Add New Recipe</NavLink>
                     </li>
                 </ul>
             </nav>

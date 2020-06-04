@@ -14,8 +14,8 @@ const Root = ({ store }) => (
             <Header />
             <Switch>
                 <Route exact path="/" component={App} />
+                <Route path="/recipes/add" component={AddRecipe} />
                 <Route path="/recipes/:id" component={Recipe} />
-                <Route path="/add-recipe" component={AddRecipe} />
                 <Redirect from="/recipes" to="/" />
                 <Route component={NoMatch} />
             </Switch>
