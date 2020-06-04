@@ -14,20 +14,29 @@ class EditRecipeIngredient extends Component {
 
     handleAmountChange(e) {
         const index = this.props.ingredientIndex;
-        const amountInput = e.target;
-        const inputName = amountInput.name;
-        const amountValue = amountInput.value;
+        const currentInput = e.target;
+        const inputName = currentInput.name;
+        const inputValue = currentInput.value;
 
-        this.props.onIngredientChanged( inputName, amountValue, index );
+        this.props.onIngredientChanged( inputName, inputValue, this.isValidIngredient( inputValue ), index );
     }
 
     handleNameChange(e) {
         const index = this.props.ingredientIndex;
-        const nameInput = e.target;
-        const inputName = nameInput.name;
-        const nameValue = nameInput.value;
+        const currentInput = e.target;
+        const inputName = currentInput.name;
+        const inputValue = currentInput.value;
 
-        this.props.onIngredientChanged( inputName, nameValue, index );
+        this.props.onIngredientChanged( inputName, inputValue, this.isValidIngredient( inputValue ), index );
+    }
+
+    isValidIngredient( inputValue ) {
+
+        if( !!inputValue.trim() ) {
+            return true;
+        }
+
+        return false;
     }
 
     handleRemoveIngredient(e) {

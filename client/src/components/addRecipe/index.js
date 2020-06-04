@@ -21,16 +21,24 @@ class AddRecipe extends Component {
                 content: '',
                 isValid: false
             },
-            recipe_ingredients: [],
-            recipe_instructions: { content: '' },
-            form_valid: false
+            recipe_ingredients: {
+                ingredients: [],
+                isValid: false
+            },
+            recipe_instructions: {
+                content: '',
+                isValid: false
+            }
         }
         this.handleChange = this.handleChange.bind(this);
         this.validateTextInput = this.validateTextInput.bind(this);
         this.handleAddIngredient = this.handleAddIngredient.bind(this);
         this.handleEditIngredient = this.handleEditIngredient.bind(this);
         this.handleRemoveIngredient = this.handleRemoveIngredient.bind(this);
+        this.ingredientsAreValid = this.ingredientsAreValid.bind(this);
         this.handleEditorChange = this.handleEditorChange.bind(this);
+        this.validateEditorContent = this.validateEditorContent.bind(this);
+        this.validateForm = this.validateForm.bind(this);
         this.handleReset = this.handleReset.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -53,77 +61,152 @@ class AddRecipe extends Component {
         const currentInput = e.target;
         const inputName = currentInput.name;
         const inputValue = currentInput.value;
+        let inputIsValid = false;
         
         if( !!inputValue.trim() ) {
-            this.setState({
-                [inputName]: {
-                    content: this.state[inputName].content,
-                    isValid: true
-                }
-            })
-        } else {
-            this.setState({
-                [inputName]: {
-                    content: this.state[inputName].content,
-                    isValid: false
-                }
-            })
+            inputIsValid = true;
         }
+
+        this.setState({
+            [inputName]: {
+                content: this.state[inputName].content,
+                isValid: inputIsValid
+            }
+        })
     }
 
     handleAddIngredient(ingredientAdded) {
-        const currentIngredients = this.state.recipe_ingredients;
+        const currentIngredients = this.state.recipe_ingredients.ingredients;
 
         this.setState({
-            recipe_ingredients: [...currentIngredients, ingredientAdded]
-        })
+            recipe_ingredients: {
+                ingredients: [...currentIngredients, ingredientAdded],
+                isValid: this.state.recipe_ingredients.isValid
+            }
+        }, this.ingredientsAreValid)
     }
 
-    handleEditIngredient(type, value, index) {
-        let currentIngredients = this.state.recipe_ingredients;
-        currentIngredients[index][type] = value;
+    handleEditIngredient(type, value, isValid, index) {
+        let currentIngredients = this.state.recipe_ingredients.ingredients;
+        currentIngredients[index][type].content = value;
+        currentIngredients[index][type].isValid = isValid;
         
         this.setState({
-            recipe_ingredients: currentIngredients
-        })
+            recipe_ingredients: {
+                ingredients: currentIngredients,
+                isValid: this.state.recipe_ingredients.isValid
+            }
+        }, this.ingredientsAreValid)
     }
 
     handleRemoveIngredient( ingredientIndex ) {
-        const currentIngredients = this.state.recipe_ingredients.filter( (el, i) => ingredientIndex !== i );
+        const currentIngredients = this.state.recipe_ingredients.ingredients.filter( (el, i) => ingredientIndex !== i );
 
         this.setState({
-            recipe_ingredients: currentIngredients
+            recipe_ingredients: {
+                ingredients: currentIngredients,
+                isValid: this.state.recipe_ingredients.isValid
+            }
+        }, this.ingredientsAreValid)
+    }
+
+    ingredientsAreValid() {
+        const currentIngredients = this.state.recipe_ingredients.ingredients;
+        let ingredientsValid = true;
+
+        if( currentIngredients.length === 0 ) {
+            ingredientsValid = false;
+        } else {
+            currentIngredients.map( val => {
+                const ingredientAmountValid = val.ingredient_amount.isValid;
+                const ingredientNameValid = val.ingredient_name.isValid;
+                
+                if( !ingredientAmountValid || !ingredientNameValid ) {
+                    ingredientsValid = false;
+                }
+            })
+        }
+
+        this.setState({
+            recipe_ingredients: {
+                ingredients: currentIngredients,
+                isValid: ingredientsValid
+            }
         })
     }
 
     handleEditorChange( content, editor ) {
-        const editorContent = {content};
+        const editorContent = {
+            content,
+            isValid: this.state.recipe_instructions.isValid
+        };
 
         this.setState({
             recipe_instructions: editorContent
+        }, this.validateEditorContent)
+    }
+
+    validateEditorContent() {
+        const editorContent = this.state.recipe_instructions.content
+        let contentIsValid = false;
+        
+        if( !!editorContent.trim() ) {
+            contentIsValid = true;
+        }
+
+        this.setState({
+            recipe_instructions: {
+                content: this.state.recipe_instructions.content,
+                isValid: contentIsValid
+            }
         })
     }
 
+    validateForm() {
+        const recipeData = this.state;
+
+        for( let [key, val] of Object.entries(recipeData) ) {
+            
+            if( !val.isValid ) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     handleReset(e) {
+        e.preventDefault();
+
         this.setState({
             recipe_name: {
                 content: '',
                 isValid: false
             },
-            recipe_description: '',
-            recipe_ingredients: [],
-            recipe_instructions: { content: '' }
+            recipe_description: {
+                content: '',
+                isValid: false
+            },
+            recipe_ingredients: {
+                ingredients: [],
+                isValid: false
+            },
+            recipe_instructions: {
+                content: '',
+                isValid: false
+            }
         });
-        e.preventDefault();
     }
 
     handleSubmit(e) {
-        const recipeData = this.state;
-
-        if( this.state.form_valid ) {
-            this.props.newRecipe( recipeData, this.props.history );
-        }
         e.preventDefault();
+
+        const recipeData = this.state;
+        const isFormValid = this.validateForm();
+
+        // if( isFormValid ) {
+        //     this.props.newRecipe( recipeData, this.props.history );
+        // }
     }
 
     render() {
@@ -136,7 +219,7 @@ class AddRecipe extends Component {
                     <form onSubmit={this.handleSubmit} className="add-recipe__form">
                         <div className="add-recipe__row">
                             <label htmlFor="recipeName" className="add-recipe__row__label">Recipe Name</label>
-                            <input name="recipe_name" id="recipeName" className="add-recipe__row__input" type="text" onChange={this.handleChange} value={this.state.recipe_name.content} required />
+                            <input name="recipe_name" id="recipeName" className="add-recipe__row__input" type="text" onChange={this.handleChange} value={this.state.recipe_name.content} />
                         </div>
                         <div className="add-recipe__row">
                             <label htmlFor="recipeDescription" className="add-recipe__row__label">Description of recipe</label>
@@ -145,10 +228,10 @@ class AddRecipe extends Component {
                         <div className="add-recipe__row">
                             <h3 className="add-recipe__row__title">Ingredients</h3>
                             <div className="add-recipe__ingredients">
-                                {this.state.recipe_ingredients.map( (ingredient, i) => {
+                                {this.state.recipe_ingredients.ingredients.map( (ingredient, i) => {
                                     return(
                                         <div key={i} className="add-recipe__ingredients__ingredient">
-                                            <EditRecipeInput onIngredientChanged={this.handleEditIngredient} onIngredientRemoved={this.handleRemoveIngredient} ingredientIndex={i} ingredientAmount={ingredient.ingredient_amount} ingredientName={ingredient.ingredient_name} />
+                                            <EditRecipeInput onIngredientChanged={this.handleEditIngredient} onIngredientRemoved={this.handleRemoveIngredient} ingredientIndex={i} ingredientAmount={ingredient.ingredient_amount.content} ingredientName={ingredient.ingredient_name.content} />
                                         </div>
                                     )
                                 })}
