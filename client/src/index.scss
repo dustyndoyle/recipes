@@ -119,6 +119,59 @@ textarea {
 
 .tox {
 
+    &--error {
+        border-color: #f00 !important;
+
+        &:not([dir=rtl]) {
+
+            .tox-editor-container {
+    
+                .tox-toolbar {
+        
+                    &__group {
+        
+                        &:not(:last-of-type) {
+                            border-color: #f00 !important;
+                        }
+                    }
+    
+                    &__primary {
+                        border-color: #f00 !important;
+                    }
+                }
+            }
+    
+            .tox-statusbar {
+                border-color: #f00 !important;
+            }
+        }
+    }
+
+    .add-recipe__row--error & {
+        border-color: #f00 !important;
+
+        .tox-editor-container {
+    
+            .tox-toolbar {
+    
+                &__group {
+    
+                    &:not(:last-of-type) {
+                        border-color: #f00 !important;
+                    }
+                }
+
+                &__primary {
+                    border-color: #f00 !important;
+                }
+            }
+        }
+
+        .tox-statusbar {
+            border-color: #f00 !important;
+        }
+    }
+
     &:not([dir=rtl]) {
 
         .tox-editor-container {
@@ -152,5 +205,6 @@ textarea {
     &.tox-tinymce {
         border: 1px solid #000;
         border-radius: 3px;
+
     }
 }

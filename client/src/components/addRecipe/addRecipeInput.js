@@ -30,9 +30,9 @@ class AddRecipeIngredient extends Component {
         this.setState({
             ingredient_amount: {
                 content: amountValue,
-                isValid: this.state.ingredient_amount.isValid
+                isValid: this.isValidIngredient(e)
             }
-        }, () => this.isValidIngredient(e));
+        });
     }
 
     handleNameChange(e) {
@@ -43,27 +43,25 @@ class AddRecipeIngredient extends Component {
         this.setState({
             ingredient_name: {
                 content: nameValue,
-                isValid: this.state.ingredient_amount.isValid
+                isValid: this.isValidIngredient(e)
             }
-        }, () => this.isValidIngredient(e));
+        });
     }
 
     isValidIngredient(e) {
-        const input = e.target;
-        const inputName = input.name;
-        const inputValue = input.value;
-        let inputIsValid = false;
+        const nameInput = e.target;
+        const nameValue = nameInput.value;
 
-        if( !!inputValue.trim() ) {
-            inputIsValid = true
+        if( !!nameValue.trim() ) {
+            nameInput.classList.remove('add-recipe__ingredients__add__error');
+            nameInput.classList.add('add-recipe__ingredients__add__valid');
+            return true;
         }
 
-        this.setState({
-            [inputName]: {
-                content: this.state[inputName].content,
-                isValid: inputIsValid
-            }
-        })
+        nameInput.classList.remove('add-recipe__ingredients__add__valid');
+        nameInput.classList.add('add-recipe__ingredients__add__error');
+
+        return false;
     }
 
     handleAddIngredient(e) {
@@ -73,6 +71,8 @@ class AddRecipeIngredient extends Component {
         for( let [key] of Object.entries( addedIngredient ) ) {
 
             if( !addedIngredient[key].isValid ) {
+                const inputName = ( key === 'ingredient_amount' ? 'ingredient_add_amount' : 'ingredient_add_name' );
+                document.getElementsByName(inputName)[0].classList.add('add-recipe__ingredients__add__error')
                 canAddIngredient = false;
             }
         }
@@ -98,9 +98,9 @@ class AddRecipeIngredient extends Component {
 
     render() {
         return (
-            <div className="add-recipe__ingredients__add__row">
-                <input className="add-recipe__ingredients__add__amount" type="text" name="ingredient_amount" onChange={this.handleAmountChange} placeholder="Ingredient amount" value={this.state.ingredient_amount.content} />
-                <input className="add-recipe__ingredients__add__name" type="text" name="ingredient_name" onChange={this.handleNameChange} placeholder="Ingredient name" value={this.state.ingredient_name.content} />
+            <div id="addRecipeInputContainer" className="add-recipe__ingredients__add__row">
+                <input className={`add-recipe__ingredients__add__amount`} type="text" name="ingredient_add_amount" onChange={this.handleAmountChange} placeholder="Ingredient amount" value={this.state.ingredient_amount.content} />
+                <input className={`add-recipe__ingredients__add__name`} type="text" name="ingredient_add_name" onChange={this.handleNameChange} placeholder="Ingredient name" value={this.state.ingredient_name.content} />
                 <button id="addRecipeIngredient" className="add-recipe__ingredients__add__button" onClick={this.handleAddIngredient} type="button">
                     <FontAwesomeIcon icon={faPlus} />
                 </button>

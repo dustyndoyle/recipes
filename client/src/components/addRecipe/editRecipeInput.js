@@ -46,10 +46,12 @@ class EditRecipeIngredient extends Component {
     }
 
     render() {
+        const ingredientAmountError = !this.props.ingredientAmount.isValid ? 'add-recipe__ingredients__edit__amount__error' : 'add-recipe__ingredients__edit__amount__valid';
+        const ingredientNameError = !this.props.ingredientName.isValid ? 'add-recipe__ingredients__edit__name__error' : 'add-recipe__ingredients__edit__name__valid';
         return (
             <div className="add-recipe__ingredients__edit">
-                <input className="add-recipe__ingredients__edit__amount" type="text" name="ingredient_amount" onChange={this.handleAmountChange} placeholder="Ingredient amount" value={this.props.ingredientAmount} />
-                <input className="add-recipe__ingredients__edit__name" type="text" name="ingredient_name" onChange={this.handleNameChange} placeholder="Ingredient name" value={this.props.ingredientName} />
+                <input className={`add-recipe__ingredients__edit__amount ${ingredientAmountError}`} type="text" name="ingredient_amount" onChange={this.handleAmountChange} placeholder="Ingredient amount" value={this.props.ingredientAmount.content} />
+                <input className={`add-recipe__ingredients__edit__name ${ingredientNameError}`} type="text" name="ingredient_name" onChange={this.handleNameChange} placeholder="Ingredient name" value={this.props.ingredientName.content} />
                 <button id="addRecipeIngredient" className="add-recipe__ingredients__edit__button" onClick={this.handleRemoveIngredient} type="button">
                     <FontAwesomeIcon icon={faMinus} />
                 </button>

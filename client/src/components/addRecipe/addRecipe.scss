@@ -18,10 +18,35 @@
             margin-top: 0;
         }
 
+        &--error {
+
+            .add-recipe {
+
+                &__row {
+
+                    &__title {
+                        color: #f00;
+                    }
+
+                    &__label {
+                        color: #f00;
+                    }
+                }
+            }
+        }
+
         &__title {
             font-size: 1.25rem;
             padding-top: 1.25rem;
             margin-bottom: 0.75rem;
+        }
+
+        &__input {
+
+            &__error {
+                outline-color: #f00 !important;
+                border-color: #f00 !important;
+            }
         }
     }
 
@@ -42,12 +67,22 @@
                 // font-weight: bold;
                 // text-align: right;
                 // padding-right: 1.25rem;
+
+                &__error {
+                    outline-color: #f00 !important;
+                    border-color: #f00 !important;
+                }
             }
     
             &__name {
                 flex: 1 0 0px;
                 font-size: 0.9375rem;
                 margin-left: 1.25rem;
+
+                &__error {
+                    outline-color: #f00 !important;
+                    border-color: #f00 !important;
+                }
             }
 
             &__button {
@@ -78,6 +113,11 @@
             &__row {
                 display: flex;
                 align-items: center;
+            }
+
+            &__error {
+                outline-color: #f00 !important;
+                border-color: #f00 !important;
             }
 
             &__amount {

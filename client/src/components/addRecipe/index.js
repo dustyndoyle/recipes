@@ -6,6 +6,7 @@ import { Editor } from '@tinymce/tinymce-react';
 import { addNewRecipe } from '../../actions/recipes/addRecipe';
 import AddRecipeIngredient from './addRecipeInput';
 import EditRecipeInput from './editRecipeInput';
+import ValidationMessage from '../validationMessage';
 import './addRecipe.scss'
 
 class AddRecipe extends Component {
@@ -52,38 +53,37 @@ class AddRecipe extends Component {
         this.setState({
             [inputName]: {
                 content: inputValue,
-                isValid: this.state[inputName].isValid
+                isValid: this.validateTextInput(e)
             }
-        }, () => this.validateTextInput(e) );
+        });
     }
 
     validateTextInput(e) {
         const currentInput = e.target;
-        const inputName = currentInput.name;
         const inputValue = currentInput.value;
-        let inputIsValid = false;
         
         if( !!inputValue.trim() ) {
-            inputIsValid = true;
+
+            currentInput.parentElement.classList.remove('add-recipe__row--error');
+            currentInput.classList.remove('add-recipe__row__input__error');
+            currentInput.classList.add('add-recipe__row__input__valid');
+            return true;
         }
 
-        this.setState({
-            [inputName]: {
-                content: this.state[inputName].content,
-                isValid: inputIsValid
-            }
-        })
+        currentInput.classList.remove('add-recipe__row__input__valid');
+        currentInput.classList.add('add-recipe__row__input__error');
+        return false
     }
 
     handleAddIngredient(ingredientAdded) {
-        const currentIngredients = this.state.recipe_ingredients.ingredients;
+        const currentIngredients = [ ...this.state.recipe_ingredients.ingredients, ingredientAdded ];
 
         this.setState({
             recipe_ingredients: {
-                ingredients: [...currentIngredients, ingredientAdded],
-                isValid: this.state.recipe_ingredients.isValid
+                ingredients: currentIngredients,
+                isValid: this.ingredientsAreValid(currentIngredients)
             }
-        }, this.ingredientsAreValid)
+        })
     }
 
     handleEditIngredient(type, value, isValid, index) {
@@ -94,9 +94,9 @@ class AddRecipe extends Component {
         this.setState({
             recipe_ingredients: {
                 ingredients: currentIngredients,
-                isValid: this.state.recipe_ingredients.isValid
+                isValid: this.ingredientsAreValid(currentIngredients)
             }
-        }, this.ingredientsAreValid)
+        })
     }
 
     handleRemoveIngredient( ingredientIndex ) {
@@ -105,15 +105,15 @@ class AddRecipe extends Component {
         this.setState({
             recipe_ingredients: {
                 ingredients: currentIngredients,
-                isValid: this.state.recipe_ingredients.isValid
+                isValid: this.ingredientsAreValid(currentIngredients)
             }
-        }, this.ingredientsAreValid)
+        })
     }
 
-    ingredientsAreValid() {
-        const currentIngredients = this.state.recipe_ingredients.ingredients;
+    ingredientsAreValid( currentIngredients ) {
+        const ingredientsRow = document.getElementById( 'addRecipeIngredients' );
         let ingredientsValid = true;
-
+        
         if( currentIngredients.length === 0 ) {
             ingredientsValid = false;
         } else {
@@ -127,52 +127,64 @@ class AddRecipe extends Component {
             })
         }
 
-        this.setState({
-            recipe_ingredients: {
-                ingredients: currentIngredients,
-                isValid: ingredientsValid
-            }
-        })
+        if( ingredientsValid ) {
+            ingredientsRow.classList.remove( 'add-recipe__row--error' );
+        }
+
+        return ingredientsValid;
     }
 
     handleEditorChange( content, editor ) {
         const editorContent = {
             content,
-            isValid: this.state.recipe_instructions.isValid
+            isValid: this.validateEditorContent(content, editor)
         };
 
         this.setState({
             recipe_instructions: editorContent
-        }, this.validateEditorContent)
+        })
     }
 
-    validateEditorContent() {
-        const editorContent = this.state.recipe_instructions.content
-        let contentIsValid = false;
+    validateEditorContent(content, editor) {
         
-        if( !!editorContent.trim() ) {
-            contentIsValid = true;
+        if( !!content.trim() ) {
+            editor.editorContainer.parentElement.classList.remove('add-recipe__row--error');
+            editor.editorContainer.classList.remove('tox--error');
+            editor.editorContainer.classList.add('tox--valid');
+            return true;
         }
-
-        this.setState({
-            recipe_instructions: {
-                content: this.state.recipe_instructions.content,
-                isValid: contentIsValid
-            }
-        })
+        
+        editor.editorContainer.classList.remove('tox--valid');
+        editor.editorContainer.classList.add('tox--error');
+        return false;
     }
 
     validateForm() {
         const recipeData = this.state;
+        let formValid = true;
 
         for( let [key, val] of Object.entries(recipeData) ) {
             
             if( !val.isValid ) {
-                return false;
+                formValid = false;
+
+                switch( key ) {
+                    case 'recipe_ingredients' :
+                        const ingredientsRow = document.getElementById( 'addRecipeIngredients' );
+                        ingredientsRow.classList.add( 'add-recipe__row--error' );
+                        break;
+                    case 'recipe_instructions' :
+                        const instructionsRow = document.getElementById( 'addRecipeInstructions' );
+                        instructionsRow.classList.add( 'add-recipe__row--error' );
+                        break;
+                    default :
+                        document.getElementsByName(key)[0].parentElement.classList.add( 'add-recipe__row--error' );
+                        document.getElementsByName(key)[0].classList.add('add-recipe__row__input__error');
+                }
             }
         }
 
-        return true;
+        return formValid;
     }
 
     handleReset(e) {
@@ -203,10 +215,13 @@ class AddRecipe extends Component {
 
         const recipeData = this.state;
         const isFormValid = this.validateForm();
+        console.log( recipeData )
 
-        // if( isFormValid ) {
-        //     this.props.newRecipe( recipeData, this.props.history );
-        // }
+        if( isFormValid ) {
+            this.props.newRecipe( recipeData, this.props.history );
+        } else {
+            window.scrollTo(0,0);
+        }
     }
 
     render() {
@@ -216,6 +231,7 @@ class AddRecipe extends Component {
                     <div className="add-recipe__header">
                         <h1 className="add-recipe__header__title">Add New Recipe</h1>
                     </div>
+                    <ValidationMessage />
                     <form onSubmit={this.handleSubmit} className="add-recipe__form">
                         <div className="add-recipe__row">
                             <label htmlFor="recipeName" className="add-recipe__row__label">Recipe Name</label>
@@ -225,13 +241,13 @@ class AddRecipe extends Component {
                             <label htmlFor="recipeDescription" className="add-recipe__row__label">Description of recipe</label>
                             <textarea name="recipe_description" id="recipeDescription" maxLength="300" className="add-recipe__row__input" onChange={this.handleChange} value={this.state.recipe_description.content} />
                         </div>
-                        <div className="add-recipe__row">
+                        <div id="addRecipeIngredients" className="add-recipe__row">
                             <h3 className="add-recipe__row__title">Ingredients</h3>
                             <div className="add-recipe__ingredients">
                                 {this.state.recipe_ingredients.ingredients.map( (ingredient, i) => {
                                     return(
                                         <div key={i} className="add-recipe__ingredients__ingredient">
-                                            <EditRecipeInput onIngredientChanged={this.handleEditIngredient} onIngredientRemoved={this.handleRemoveIngredient} ingredientIndex={i} ingredientAmount={ingredient.ingredient_amount.content} ingredientName={ingredient.ingredient_name.content} />
+                                            <EditRecipeInput onIngredientChanged={this.handleEditIngredient} onIngredientRemoved={this.handleRemoveIngredient} ingredientIndex={i} ingredientAmount={ingredient.ingredient_amount} ingredientName={ingredient.ingredient_name} />
                                         </div>
                                     )
                                 })}
@@ -240,7 +256,7 @@ class AddRecipe extends Component {
                                 <AddRecipeIngredient onIngredientAdded={this.handleAddIngredient} />
                             </div>
                         </div>
-                        <div className="add-recipe__row">
+                        <div id="addRecipeInstructions" className="add-recipe__row">
                             <h3 className="add-recipe__row__title">Instructions</h3>
                             <Editor
                                 initialValue={this.state.recipe_instructions.content}
