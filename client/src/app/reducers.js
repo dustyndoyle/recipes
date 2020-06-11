@@ -16,6 +16,8 @@ function addRecipe( state = {}, action ) {
         isAdding: true,
         recipe_name: action.recipe_name,
         recipe_description: action.recipe_description,
+        recipe_ingredients: action.recipe_ingredients,
+        recipe_instructions: action.recipe_instructions,
         user_id: action.userId,
     }
 

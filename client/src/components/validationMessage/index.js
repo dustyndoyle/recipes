@@ -1,4 +1,5 @@
 import React from 'react';
+import './validation.scss'
 
 const ValidationMessage = () => (
     <div className="validation-message">
